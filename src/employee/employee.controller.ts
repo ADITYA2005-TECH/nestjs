@@ -9,11 +9,13 @@ import {
   Post,
   UseGuards,
   UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { EmployeeService } from './employee.service';
 import { EmailParam } from 'src/common/decorator/email.decorator';
 import { AuthenticationGuard } from 'src/common/guard/authentication.guard';
 import { IntegerPipe } from 'src/common/pipe/integer.pipe';
+import { EmployeeDTO } from './dto/employee.dto';
 
 @Controller('employee')
 export class EmployeeController {
@@ -24,8 +26,8 @@ export class EmployeeController {
   }
 
   @Get(':id')
-  @UsePipes(IntegerPipe)
-  getEmployeeById(@Param('id') id: number) {   
+  @UsePipes(IntegerPipe)    
+  getEmployeeById(@Param('id') id: number): Promise<EmployeeDTO> {   
     return this.employeeService.getEmployeeById(id);
   }
   
@@ -42,7 +44,11 @@ export class EmployeeController {
 
   @Post()
   @UseGuards(AuthenticationGuard)
-  createEmployee(@Body() body: any) {
+
+  createEmployee(@Body(new ValidationPipe({
+    disableErrorMessages: true,
+    whitelist: true,
+  })) body: EmployeeDTO) {
     return this.employeeService.createEmployee(body);
   }
 
