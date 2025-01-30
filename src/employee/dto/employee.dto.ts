@@ -1,9 +1,9 @@
-import { IsString, isString } from "class-validator";
+import { Expose } from "class-transformer";
 
 export class EmployeeDTO{
-    @IsString()
+    @Expose()
     name:string
 
-    @IsString()
+    @Expose()
     email:string
 }

@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { LoggingInterceptor } from './common/interceptor/loggin.interceptor';
+import { LoggingInterceptor } from './common/interceptor/logging.interceptor';
 import { ValidationPipe } from '@nestjs/common';
 
 async function start() {

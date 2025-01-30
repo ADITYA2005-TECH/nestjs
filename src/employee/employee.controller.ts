@@ -16,12 +16,15 @@ import { EmailParam } from 'src/common/decorator/email.decorator';
 import { AuthenticationGuard } from 'src/common/guard/authentication.guard';
 import { IntegerPipe } from 'src/common/pipe/integer.pipe';
 import { EmployeeDTO } from './dto/employee.dto';
+import { Serialize } from 'src/common/interceptor/serialize.interceptor';
+import { CreateEmployeeDTO } from './dto/create-employee.dto';
 
 @Controller('employee')
 export class EmployeeController {
   constructor(private employeeService: EmployeeService) {}
   @Get()
-  getAllEmployee() {
+  // @Serialize(EmployeeDTO)
+  getAllEmployee() : Promise<EmployeeDTO[]> {
     return this.employeeService.getAllEmployee();
   }
 
@@ -51,8 +54,8 @@ export class EmployeeController {
         forbidNonWhitelisted: true,
       }),
     )
-    body: EmployeeDTO,
-  ) {
+    body: CreateEmployeeDTO,
+  ): Promise<CreateEmployeeDTO[]> {
     return this.employeeService.createEmployee(body);
   }
 
