@@ -26,11 +26,10 @@ export class EmployeeController {
   }
 
   @Get(':id')
-  @UsePipes(IntegerPipe)    
-  getEmployeeById(@Param('id') id: number): Promise<EmployeeDTO> {   
+  @UsePipes(IntegerPipe)
+  getEmployeeById(@Param('id') id: number): Promise<EmployeeDTO> {
     return this.employeeService.getEmployeeById(id);
   }
-  
 
   @Get('search/:email')
   getEmployeeByEmail(@EmailParam() email: string) {
@@ -43,12 +42,17 @@ export class EmployeeController {
   }
 
   @Post()
-  @UseGuards(AuthenticationGuard)
-
-  createEmployee(@Body(new ValidationPipe({
-    disableErrorMessages: true,
-    whitelist: true,
-  })) body: EmployeeDTO) {
+  // @UseGuards(AuthenticationGuard)
+  createEmployee(
+    @Body(
+      new ValidationPipe({
+        disableErrorMessages: true,
+        whitelist: true,
+        forbidNonWhitelisted: true,
+      }),
+    )
+    body: EmployeeDTO,
+  ) {
     return this.employeeService.createEmployee(body);
   }
 
