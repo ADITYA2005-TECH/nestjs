@@ -23,7 +23,7 @@ export class EmployeeService {
     return await this.employeeRepository.findOne({ where: { id } });
   }
 
-  async createEmployee(body: any): Promise<CreateEmployeeDTO[]> {
+  async createEmployee(body: any) {
     const emp = this.employeeRepository.create(body);
     return this.employeeRepository.save(emp);
   }

@@ -54,8 +54,8 @@ export class EmployeeController {
         forbidNonWhitelisted: true,
       }),
     )
-    body: CreateEmployeeDTO,
-  ): Promise<CreateEmployeeDTO[]> {
+    body: any,
+  ) {
     return this.employeeService.createEmployee(body);
   }
 
