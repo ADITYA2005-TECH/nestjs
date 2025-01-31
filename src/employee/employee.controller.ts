@@ -18,13 +18,15 @@ import { IntegerPipe } from 'src/common/pipe/integer.pipe';
 import { EmployeeDTO } from './dto/employee.dto';
 import { Serialize } from 'src/common/interceptor/serialize.interceptor';
 import { CreateEmployeeDTO } from './dto/create-employee.dto';
+import { Roles } from 'src/common/decorator/role.decorator';
+import { AuthorizationGuard } from 'src/common/guard/authorization.guard';
 
 @Controller('employee')
 export class EmployeeController {
   constructor(private employeeService: EmployeeService) {}
   @Get()
   // @Serialize(EmployeeDTO)
-  getAllEmployee() : Promise<EmployeeDTO[]> {
+  getAllEmployee(): Promise<EmployeeDTO[]> {
     return this.employeeService.getAllEmployee();
   }
 
@@ -45,17 +47,17 @@ export class EmployeeController {
   }
 
   @Post()
-  // @UseGuards(AuthenticationGuard)
+  // @Roles('admin', 'manager')
+  // @UseGuards(AuthorizationGuard)
   createEmployee(
-    @Body(
-      new ValidationPipe({
-        disableErrorMessages: true,
-        whitelist: true,
-        forbidNonWhitelisted: true,
-      }),
-    )
+    @Body()
+    // new ValidationPipe({
+    //   disableErrorMessages: true,
+    //   whitelist: true,
+    //   forbidNonWhitelisted: true,
+    // }),
     body: any,
-  ) {
+  ) {       
     return this.employeeService.createEmployee(body);
   }
 
